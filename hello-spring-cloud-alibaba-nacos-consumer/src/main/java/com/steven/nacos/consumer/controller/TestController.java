@@ -8,14 +8,20 @@
 package com.steven.nacos.consumer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+@RefreshScope
 @RestController
 public class TestController {
     private final RestTemplate restTemplate;
+
+    @Value("${user.name}")
+    private String username;
 
     @Autowired
     public TestController(RestTemplate restTemplate) {
@@ -25,5 +31,9 @@ public class TestController {
     @GetMapping(value = "/hello/{message}")
     public String hello(@PathVariable("message") String message) {
         return restTemplate.getForObject("http://service-provider/hello/" + message , String.class);
+    }
+    @GetMapping(value = "/name")
+    public String getName(){
+        return username;
     }
 }
