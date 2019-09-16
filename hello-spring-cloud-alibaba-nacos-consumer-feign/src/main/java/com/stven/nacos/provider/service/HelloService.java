@@ -1,5 +1,6 @@
 package com.stven.nacos.provider.service;
 
+import com.stven.nacos.provider.fallback.EchoServiceFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * Time: 23:07
  * Description:
  */
-@FeignClient(name = "service-provider")
+@FeignClient(name = "service-provider",fallback = EchoServiceFallback.class)
 public interface HelloService {
     @GetMapping(value = "/hello/{message}")
     public String hello(@PathVariable("message") String message);
